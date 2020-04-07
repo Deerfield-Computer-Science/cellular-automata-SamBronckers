@@ -16,9 +16,36 @@ public class World {
 	public void letTimePass(){
 		
 		makeNewCreatures();
-		//eatThings();
-		//creaturesGetOlder();
-		//purgeTheDead();		
+		eatThings();
+		creaturesGetOlder();
+		purgeTheDead();		
+	}
+	
+	public void eatThings() {
+		int currentSizeOfCreatureList = creatureList.size();
+		for(int i=0; i< currentSizeOfCreatureList; i++) {
+			if (creatureList.get(i) instanceof Cow) {
+				boolean hungry = true;
+				for (int a =0; a<currentSizeOfCreatureList; a++) {
+					if (creatureList.get(a) instanceof Grass && isNearby(a,i)) {
+						hungry = false;
+						break;
+					}
+				}
+				if (hungry) {
+					System.out.println("got in the isDead");
+					creatureList.get(i).makeDead();
+				}
+			}
+		}
+	}
+	
+	public boolean isNearby(int a, int i) {
+		if ((((creatureList.get(a).getMyLocation().getX() <= (creatureList.get(i).getMyLocation().getX() + 1) && (creatureList.get(a).getMyLocation().getX() >= (creatureList.get(i).getMyLocation().getX() -1) && ((creatureList.get(a).getMyLocation().getY() <= (creatureList.get(i).getMyLocation().getY() + 1) && (creatureList.get(a).getMyLocation().getY() >= (creatureList.get(i).getMyLocation().getY() -1))))))))) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public void makeNewCreatures() {
@@ -33,8 +60,10 @@ public class World {
 	public void purgeTheDead(){
 		int i=0;
 		while(i<creatureList.size()){
-			if(creatureList.get(i).isDead())
+			if(creatureList.get(i).isDead()) {
 				creatureList.remove(i);
+				System.out.println("got removed");
+			}
 			else
 				i++;
 		}	
@@ -42,7 +71,11 @@ public class World {
 	
 	public void creaturesGetOlder(){
 		for( LifeForm l:creatureList){
-			l.age(1);
+			if (l instanceof Cow && l.myAge >= 20) {
+				l.isDead();
+			} else {
+				l.age(1);
+			}
 		}
 	}
 	

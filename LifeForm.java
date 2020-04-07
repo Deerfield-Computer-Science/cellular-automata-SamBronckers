@@ -42,9 +42,14 @@ public abstract class LifeForm {
 	// to be alive you have to be able to reproduce....
 	public abstract void reproduce();
 	
+	public void makeDead() {
+		alive = false;
+	}
+	
 	public boolean isDead(){
 		return !alive;
 	}
+	
 	
 	// getter and setters (aka accessors and mutators)
 	public int getMyLifeSpan() {
